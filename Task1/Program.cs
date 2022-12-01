@@ -1,4 +1,4 @@
-﻿/*Напишите программу, которая принимает на вход пятизначное число и проверяет, является ли оно палиндромом. Не использовать строки
+/*Напишите программу, которая принимает на вход пятизначное число и проверяет, является ли оно палиндромом. Не использовать строки
 
 14212 -> нет
 
@@ -6,22 +6,35 @@
 
 23432 -> да*/
 
-Console.Write("Введите пятизначное число > ");
+Console.Write("Введите число > ");
 int value1 = Convert.ToInt32(Console.ReadLine());
 
-bool ValidateNumber(int Number)
+int EvaluatePower(int Number)
 {
-    if(Number >=10000 && Number < 1000000)
+    int i = 0;
+    while (Number > 0)
     {
-        return true;
+    i++;
+    Number = Number / 10;
     }
-
-    System.Console.WriteLine($"Число не пятизначное");
-    return false;
+    return i;
 }
 
-if(ValidateNumber(value1))
+int power = EvaluatePower(value1);
+bool poly = false;
+double symmetryHead = value1 / Math.Pow(10, power-1);
+double symmetryEnd = value1 % 10;
+if(Math.Truncate(symmetryHead) == Math.Truncate(symmetryEnd))
 {
-    if(value1/10000 == value1%10 && (value1/1000)%10 == (value1%100)/10 ) System.Console.WriteLine($"Число {value1} является палиндромом");
-    else System.Console.WriteLine($"Число {value1} не является палиндромом");
+    poly = true;
+    for(int i = 1; i < power/2; i++)
+    {
+        symmetryHead = (value1 / Math.Pow(10, power-i-1)) % 10;
+        symmetryEnd = (value1 % Math.Pow(10, i+1)) / Math.Pow(10, i);
+        if(Math.Truncate(symmetryHead) == Math.Truncate(symmetryEnd)) poly = true;
+        else poly = false;
+    }
 }
+
+if(poly) Console.WriteLine($"Число является полиндромом");
+else Console.WriteLine($"Число не является полиндромом");
